@@ -3,14 +3,6 @@ import numpy as np
 import pandas as pd
 import time
 
-""" 
-def cut(data):
-    position = data.find(' ')
-    data2 = data[:position]+' 00:00:00'
-    result = time.mktime(time.strptime(data2, "%Y-%m-%d %H:%M:%S"))
-    return result
- """
-
 
 def cut(data):
     position = data.find(' ')
