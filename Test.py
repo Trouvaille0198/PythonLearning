@@ -1,93 +1,26 @@
-import numpy as np
-import operator
-
-O = int(input(("请输入方阵的行/列数：")))
-A = list(input("请输入初始状态："))
-B = list(input("请输入目标状态："))
-z = 0
-M = np.zeros((O, O))
-N = np.zeros((O, O))
-for i in range(O):
-    for j in range(O):
-        M[i][j] = A[z]
-        N[i][j] = B[z]
-        z = z + 1
-openlist = []  # open表
+from sklearn.feature_extraction.text import TfidfVectorizer
+import jieba
 
 
-class State:
-    def __init__(self, m):
-        self.node = m  # 节点代表的状态
-        self.f = 0  # f(n)=g(n)+h(n)
-        self.g = 0  # g(n)
-        self.h = 0  # h(n)
-        self.father = None  # 节点的父亲节点
+def cut_word(text):
+    # 用结巴对中文字符串进行分词
+    text = " ".join(list(jieba.cut(text)))
+    return text
 
 
-init = State(M)  # 初始状态
-goal = State(N)  # 目标状态
+data = ["一种还是一种今天很残酷，明天更残酷，后天很美好，但绝对大部分是死在明天晚上，所以每个人不要放弃今天。",
+        "我们看到的从很远星系来的光是在几百万年之前发出的，这样当我们看到宇宙时，我们是在看它的过去。",
+        "如果只用一种方式了解某样事物，你就不会真正了解它。了解事物真正含义的秘密取决于如何将其与我们所了解的事物相联系。"]
+# 将原始数据转换成分好词的形式
+text_list = []
+for sent in data:
+    text_list.append(cut_word(sent))
+print(text_list)
 
-
-# 启发函数
-def h(s):
-    a = 0
-    for i in range(len(s.node)):
-        for j in range(len(s.node[i])):
-            if s.node[i][j] != goal.node[i][j]:
-                a = a + 1
-    return a
-
-
-# 对节点列表按照估价函数的值的规则排序
-def list_sort(l):
-    cmp = operator.attrgetter('f')
-    l.sort(key=cmp)
-
-
-# A*算法
-def A_star(s):
-    global openlist  # 全局变量可以让open表进行时时更新
-    openlist = [s]
-    while (openlist):  # 当open表不为空
-        get = openlist[0]  # 取出open表的首节点
-        if (get.node == goal.node).all():  # 判断是否与目标节点一致
-            return get
-        openlist.remove(get)  # 将get移出open表
-        # 判断此时状态的空格位置
-        for a in range(len(get.node)):
-            for b in range(len(get.node[a])):
-                if get.node[a][b] == 0:
-                    break
-            if get.node[a][b] == 0:
-                break
-        # 开始移动
-        for i in range(len(get.node)):
-            for j in range(len(get.node[i])):
-                c = get.node.copy()
-                if (i + j - a - b) ** 2 == 1:
-                    c[a][b] = c[i][j]
-                    c[i][j] = 0
-                    new = State(c)
-                    new.father = get  # 此时取出的get节点成为新节点的父亲节点
-                    new.g = get.g + 1  # 新节点与父亲节点的距离
-                    new.h = h(new)  # 新节点的启发函数值
-                    new.f = new.g + new.h  # 新节点的估价函数值
-                    openlist.append(new)  # 加入open表中
-        list_sort(openlist)  # 排序
-
-
-# 递归打印路径
-def printpath(f):
-    if f is None:
-        return
-    # 注意print()语句放在递归调用前和递归调用后的区别。放在后实现了倒叙输出
-    printpath(f.father)
-    print(f.node)
-
-
-final = A_star(init)
-if final:
-    print("有解，解为：")
-    printpath(final)
-else:
-    print("无解")
+# 1、实例化一个转换器类
+# transfer = CountVectorizer(sparse=False)
+transfer = TfidfVectorizer(stop_words=['一种', '不会', '不要'])
+# 2、调用fit_transform
+data = transfer.fit_transform(text_list)
+print("文本特征抽取的结果：\n", data.toarray())
+print("返回特征名字：\n", transfer.get_feature_names())
