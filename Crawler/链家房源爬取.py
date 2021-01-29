@@ -3,6 +3,7 @@ from requests.exceptions import RequestException
 from pyquery import PyQuery as pq
 import pandas as pd
 import numpy as np
+import os
 from xpinyin import Pinyin
 p = Pinyin()
 
@@ -112,5 +113,7 @@ if __name__ == '__main__':
     column = ['标题', '小区', '价格（万元）', '平米单价（元）', '户型',
               '面积（平米）', '朝向', '装修', '楼层', '建筑类型', '建成时间（年）']
     df = pd.DataFrame(info_list, columns=column)
-    df.to_csv('../Data/{}房源.csv'.format(location),
+    if not os.path.exists('Data'):
+        os.mkdir('Data')
+    df.to_csv('Data/{}房源.csv'.format(location),
               index=False, encoding="utf-8-sig")
