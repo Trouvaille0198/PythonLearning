@@ -36,7 +36,7 @@ def download_photo(url, index, foldername):  # 下载图片
         'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36'
     }
     r = requests.get(url, headers=headers, stream=True)  # 发送请求
-    folderpath = "D:/Pictures/"+foldername
+    folderpath = "D:/Pictures/" + foldername
     if not os.path.exists(folderpath):
         os.mkdir(folderpath)
     filename = folderpath + "/img{}.png".format(str(index))
@@ -51,14 +51,14 @@ def main(number, start, foldername):
     html = get_one_page(url)
     download_url = get_download_url(html)
     for i in range(len(download_url)):
-        download_photo(change_m_into_l(download_url[i]), start+i, foldername)
+        download_photo(change_m_into_l(download_url[i]), start + i, foldername)
 
 
 if __name__ == '__main__':
     number = input("请输入电影编号：")
     page = input("请输入爬取页数：")
     foldername = input("请输入文件夹名：")
-    for start in range(0, int(page)*30, 30):
+    for start in range(0, int(page) * 30, 30):
         main(number, start, foldername)
         time.sleep(1)
     print("下载完成~")

@@ -16,10 +16,11 @@ def get_one_page(url):
     '''
     try:
         headers = {
-            'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36'
+            'User-Agent':
+            'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36'
         }
         response = requests.get(url, headers=headers)
-        if(response.status_code == 200):
+        if (response.status_code == 200):
             return response.text
         return None
     except RequestException:
@@ -61,17 +62,17 @@ def anal_house_info(info_block_list):
         one_piece.append(community)
         one_piece.append(price)
         one_piece.append(average_price)
-        one_piece.append(more_info[0])              # 房型
+        one_piece.append(more_info[0])  # 房型
         one_piece.append(float(more_info[1][:-2]))  # 面积
-        one_piece.append(more_info[2])              # 朝向
-        one_piece.append(more_info[3])              # 装修
-        one_piece.append(more_info[4])              # 楼层
-        one_piece.append(more_info[-1])             # 建筑类型
+        one_piece.append(more_info[2])  # 朝向
+        one_piece.append(more_info[3])  # 装修
+        one_piece.append(more_info[4])  # 楼层
+        one_piece.append(more_info[-1])  # 建筑类型
         # 建造时间特征可能会缺失，需要做个判断
         if len(more_info) == 6:
             # 若缺失
             one_piece.append(np.nan)
-        elif more_info[-2][0:4].isdigit() == False:
+        elif not more_info[-2][0:4].isdigit():
             one_piece.append(np.nan)
         else:
             one_piece.append(int(more_info[-2][0:4]))  # 建楼时间
@@ -89,8 +90,8 @@ def main(city, location, page):
     final = []
     print('开始爬取！')
     pinyin_city = p.get_initials(city, '').lower()  # 将城市名由中文改为首字母小写
-    pinyin_location = p.get_pinyin(location, '')    # 将区域由中文改为拼音
-    for i in range(1, int(page)+1):
+    pinyin_location = p.get_pinyin(location, '')  # 将区域由中文改为拼音
+    for i in range(1, int(page) + 1):
         url = 'https://{}.lianjia.com/ershoufang/{}/pg{}/'.format(
             pinyin_city, pinyin_location, str(i))
         pq_doc = pq(get_one_page(url))
@@ -110,10 +111,13 @@ if __name__ == '__main__':
 
     info_list = main(city, location, page)
 
-    column = ['标题', '小区', '价格（万元）', '平米单价（元）', '户型',
-              '面积（平米）', '朝向', '装修', '楼层', '建筑类型', '建成时间（年）']
+    column = [
+        '标题', '小区', '价格（万元）', '平米单价（元）', '户型', '面积（平米）', '朝向', '装修', '楼层',
+        '建筑类型', '建成时间（年）'
+    ]
     df = pd.DataFrame(info_list, columns=column)
     if not os.path.exists('Data'):
         os.mkdir('Data')
     df.to_csv('Data/{}房源.csv'.format(location),
-              index=False, encoding="utf-8-sig")
+              index=False,
+              encoding="utf-8-sig")
