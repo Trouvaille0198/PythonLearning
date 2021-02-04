@@ -4,12 +4,14 @@ from lxml import etree
 import pandas as pd
 import numpy as np
 from xpinyin import Pinyin
+import time
+import os
 # 拼音对象初始化
 p = Pinyin()
 
 
-class Lianjia_crawler():
-    def __init__(self, city, location, page):
+class LianjiaCrawler():
+    def __init__(self, city, location, page, path='.'):
         self.city = city
         self.location = location
         self.page = page
@@ -18,7 +20,10 @@ class Lianjia_crawler():
             '大区域', '小区域', '户型', '朝向', '所在楼层', '装修情况', '户型结构', '建筑类型', '建筑结构',
             '建造时间', '房屋用途', '挂牌时间', '上次交易时间', '房屋年限', '产权所属', '配备电梯', '梯户比例'
         ]
-        self.path = 'Data/{}房源.csv'.format(location)
+        if path != '':
+            self.path = path
+        else:
+            self.path = os.getcwd()
 
     # 辅助函数
     def organize_url(self, i):
@@ -77,18 +82,23 @@ class Lianjia_crawler():
         '''
         url_list = []
         for i in range(1, int(self.page) + 1):
-            print('正在获取第{}页房源url'.format(str(i)))
+            # print('正在获取第{}页房源url'.format(str(i)))
             url = self.organize_url(i)
             text = self.get_one_page_text(url)
-            html = self.switch_to_xpath(text)
-            url_list.extend(self.get_house_list(html))
+            if text:
+                html = self.switch_to_xpath(text)
+                url_list.extend(self.get_house_list(html))
+                time.sleep(0.5)
         return url_list
 
     def parse_house_info(self, url):
         '''
         分析并获取单条房源信息
         '''
-        html = self.switch_to_xpath(url)
+        text = self.get_one_page_text(url)
+        if not text:
+            return []
+        html = self.switch_to_xpath(text)
         one_piece = []
         # 块区域
         around_info = html.xpath('//div[@class="aroundInfo"]')[0]
@@ -208,14 +218,14 @@ class Lianjia_crawler():
             average_price = np.nan
 
         total_area = self.is_null(total_area)[0][:-1]
-        if total_area.isdigit():
-            total_area = int(total_area)
+        if total_area.replace('.', '', 1).isdigit():
+            total_area = float(total_area)
         else:
             total_area = np.nan
 
         inner_area = self.is_null(inner_area)[0][:-1]
-        if inner_area.isdigit():
-            inner_area = int(inner_area)
+        if inner_area.replace('.', '', 1).isdigit():
+            inner_area = float(inner_area)
         else:
             inner_area = np.nan
 
@@ -278,15 +288,25 @@ class Lianjia_crawler():
         for url in url_list:
             print('正在获取第{}条房源信息'.format(url_list.index(url) + 1))
             one_piece = self.parse_house_info(url)
-            house_list.append(one_piece)
+            if not one_piece:
+                house_list.append(one_piece)
+            # time.sleep(0.5)
+        print('完成所有爬取~')
         return house_list
 
     def switch_to_pandas(self, house_list):
         '''
-        将房源复合列表转换为DataFrame格式
+        将房源复合列表转换为 DataFrame 格式
         '''
         df = pd.DataFrame(house_list, columns=self.column)
         return df
 
     def save_to_path(self, df):
-        df.to_csv(self.path, index=False, encoding="utf-8-sig")
+        '''
+        保存 DataFrame
+        '''
+        if not os.path.exists(self.path):
+            os.mkdir(self.path)
+        df.to_csv(self.path + '/{}房源.csv'.format(self.location),
+                  index=False,
+                  encoding="utf-8-sig")
