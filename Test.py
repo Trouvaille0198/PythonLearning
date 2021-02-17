@@ -1,14 +1,13 @@
 from manim import *
 
 
-class test(Scene):
+class test22(Scene):
     def construct(self):
-        circle = Circle()
-        square = Square()
-        square.flip(RIGHT)
-        square.rotate(-3 * TAU / 8)
-        circle.set_fill(PINK, opacity=0.5)
+        cir1 = Circle()
+        cir2 = Circle(fill_opacity=1)
+        text = Text("Text").scale(2)
+        mobjects = VGroup(cir1, cir2, text).scale(1.5).arrange(RIGHT, buff=2)
 
-        self.play(ShowCreation(square))
-        self.play(Transform(square, circle))
-        self.play(FadeOut(square))
+        anims = AnimationGroup(ShowCreation(cir1), Write(cir2), FadeIn(text))
+        self.play(anims)
+        self.wait()
