@@ -1,3 +1,7 @@
+'''
+播放 KMP 演示动画：命令行输入 manim getNext.py PlayKmp -p
+播放 Next 演示动画：命令行输入 manim getNext.py PlayNext -p
+'''
 from manim import *
 
 getNext = '''
