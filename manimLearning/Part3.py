@@ -8,7 +8,7 @@ class Part3(NextScene):
 
         self.play(DrawBorderThenFill(partTip))
         self.play(FadeOut(partTip))
-        ShowLines(self, '让我们回到刚才的场景...', time=2)
+        ShowLines(self, '让我们回到刚才的场景...')
         mobjects = self.build()
         pat = mobjects[1]
         prefix = mobjects[2]
@@ -29,8 +29,8 @@ class Part3(NextScene):
                                                 UP * 0.6))
         self.play(FadeIn(mobjects), FadeIn(text_group))
         ShowLines(self, '此时4和8正在进行比较，在它们前面已有四位相等', time=1)
-        ShowLines(self, '然而4和8并不相等，k需要进行回退\n\n可是，一位一位的回退，不是太浪费时间了吗？', time=2)
-        ShowLines(self, '数学家给我们提供了一种效率更高的办法\n\n不使 k--，而使 k=next[k-1]', time=2)
+        ShowLines(self, '然而4和8并不相等，k需要进行回退\n\n可是，一位一位的回退，不是太浪费时间了吗？', time=1)
+        ShowLines(self, '数学家给我们提供了一种效率更高的办法\n\n不使 k--，而使 k=next[k-1]', time=1)
         self.play(ApplyMethod(pat.set_color, WHITE), FadeOut(k[1]),
                   ApplyMethod(k[0].shift, LEFT * 1.2 + DOWN))
         formula = Text('=next[k-1]=1').scale(0.7).next_to(
@@ -112,7 +112,7 @@ class Part3(NextScene):
                   Indicate(k_string[-1], color=RED))
         self.play(ApplyMethod(j_string.set_color, WHITE),
                   ApplyMethod(k_string.set_color, WHITE))
-        ShowLines(self, '照理说，我们应该退而求其次，让后缀串向右移动一格\n\n等价于k后退一格')
+        ShowLines(self, '照理说，我们应该退而求其次，让前缀串向右移动一格\n\n等价于k后退一格')
         self.play(ApplyMethod(k_string.shift, RIGHT * 1.2))
         ShowLines(self, '慢着', time=0.25)
         self.play(ApplyMethod(k_string.shift, LEFT * 1.2))
@@ -121,7 +121,7 @@ class Part3(NextScene):
                   Indicate(k_string[0], color=GREEN))
         ShowLines(self, '前缀作为模式串与后缀进行匹配\n\n一旦失配，便尽可能地向前移动', time=2)
         self.play(ApplyMethod(k_string.shift, RIGHT * 1.2 * 3))
-        ShowLines(self, '前缀串向前移动的距离，也就是其最大相同前后缀的长度\n\n这与 kmp 算法的思想一致', time=2)
+        ShowLines(self, '我们只需让前后缀一一对应，然后再让j和k进行比较\n\n这与 kmp 算法的思想一致', time=2)
         self.play(
             Transform(
                 squ[0],

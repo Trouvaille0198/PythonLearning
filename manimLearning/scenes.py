@@ -48,7 +48,7 @@ class NextScene(Scene):
                                               buff=1.2 * (i - 1)))
         # self.play(DrawBorderThenFill(array))
         '''填入字符串'''
-        pat_list = ['B', 'A', 'C', 'B', 'B', 'A', 'C', 'B', 'A', 'C']
+        pat_list = ['B', 'A', 'C', 'B', 'B', 'A', 'C', 'B', 'A', 'D']
         pat = VGroup()
         for i in range(0, 10):
             pat.add(

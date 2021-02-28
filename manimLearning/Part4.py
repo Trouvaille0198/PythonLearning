@@ -18,3 +18,4 @@ class Part4(Scene):
                     font="Monospace",
                     style=Code.styles_list[18])
         self.play(Write(code))
+        self.wait(3)
