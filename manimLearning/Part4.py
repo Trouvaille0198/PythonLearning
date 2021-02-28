@@ -16,6 +16,6 @@ class Part4(Scene):
                     tab_width=4,
                     background="window",
                     font="Monospace",
-                    style=Code.styles_list[18])
+                    style=Code.styles_list[17])
         self.play(Write(code))
         self.wait(3)

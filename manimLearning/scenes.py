@@ -14,8 +14,9 @@ void getNext(const string &pat, int *next)
     {
         if (k == -1 || pat[j] == pat[k])
         {
-            j++;
-            k++;         //j,k向后走
+            //j,k向后走
+            j++;  
+            k++;     
             next[j] = k+1; //记录到此索引前字符串真子串的长度
         }
         else
