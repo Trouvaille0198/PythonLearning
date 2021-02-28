@@ -9,7 +9,7 @@ void getNext(const string &pat, int *next)
 //p[k]表示前缀，p[j]表示后缀
 {
     int j = 0, k = -1;
-    next[0] = -1; //设next[0]的初始值为-1
+    next[0] = 0; //设next[0]的初始值为0
     while (pat[j] != '\\0')
     {
         if (k == -1 || pat[j] == pat[k])
