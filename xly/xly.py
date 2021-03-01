@@ -210,7 +210,7 @@ class xly(Scene):
         x_float_new[5].set_color(BLUE)
         self.play(Write(tip2))
         self.play(TransformFromCopy(result_man, x_float_new[5:7]), run_time=1)
-        ShowLines(self, '符号位左边补零')
+        ShowLines(self, '符号位左边补1')
         self.play(Write(x_float_new[4]))
         self.play(Write(tip1))
         self.play(TransformFromCopy(x_exp, x_float_new[1:3]), run_time=1)
