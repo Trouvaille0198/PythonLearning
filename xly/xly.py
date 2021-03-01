@@ -42,7 +42,7 @@ class xly(Scene):
             r'2',
             r'^{-100}',
             r'\times',
-            r'-0.',
+            r'0.',
             r'111011',
         ).next_to(x_origin, RIGHT, buff=2)
         y_float = MathTex(
@@ -188,7 +188,7 @@ class xly(Scene):
                   ApplyMethod(y_float[1:4].move_to, x_exp_dot_pos),
                   FadeOut(x_float_new[0]), FadeOut(y_float[0]))
         x_float = VGroup(x_float_new[1:3], x_float_new[3], result_man)
-        ShowLines(self, '步骤三: 规则化处理')
+        ShowLines(self, '步骤三: 规则化处理',size=1)
         '''右移步骤'''
         arrow = Arrow(UP, DOWN * 0.1).set_color(YELLOW).next_to(
             result_man.get_left(), DOWN, buff=0.5)
