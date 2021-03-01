@@ -24,7 +24,7 @@ class xly(Scene):
             r'\times',
             r'-0.',
             r'11000',
-        )
+        ).shift(LEFT * 3 + UP)
         x_float = MathTex(
             r'X: ',
             r'11',
@@ -34,24 +34,24 @@ class xly(Scene):
             r'.11000',
         ).next_to(x_origin, DOWN)
 
-        x_origin = MathTex(
+        y_origin = MathTex(
             r'Y: ',
             r'2',
             r'^{-011}',
             r'\times',
             r'-0.',
             r'11000',
-        )
-        x_float = MathTex(
+        ).next_to(x_origin, RIGHT, buff=2)
+        y_float = MathTex(
             r'Y: ',
             r'11',
             r'011',
             r',',
             r'11',
             r'.11000',
-        ).next_to(x_origin, DOWN)
+        ).next_to(y_origin, DOWN)
 
-        self.add(x_origin, x_float)
+        self.add(x_origin, y_origin)
         self.play(FadeOut(x_origin[1]))
         self.play(Transform(x_origin[2], x_float[1:3]))
         # x_tip = MathTex('X:')
