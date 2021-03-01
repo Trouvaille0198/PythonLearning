@@ -18,7 +18,7 @@ class xly1(Scene):
 class xly(Scene):
     def construct(self):
         x_origin = MathTex(
-            r'X:'
+            r'X: ',
             r'2',
             r'^{-011}',
             r'\times',
@@ -26,6 +26,24 @@ class xly(Scene):
             r'11000',
         )
         x_float = MathTex(
+            r'X: ',
+            r'11',
+            r'011',
+            r',',
+            r'11',
+            r'.11000',
+        ).next_to(x_origin, DOWN)
+
+        x_origin = MathTex(
+            r'Y: ',
+            r'2',
+            r'^{-011}',
+            r'\times',
+            r'-0.',
+            r'11000',
+        )
+        x_float = MathTex(
+            r'Y: ',
             r'11',
             r'011',
             r',',
@@ -34,8 +52,8 @@ class xly(Scene):
         ).next_to(x_origin, DOWN)
 
         self.add(x_origin, x_float)
-        self.play(FadeOut(x_origin[0]))
-        self.play(Transform(x_origin[1], x_float[0:2]))
+        self.play(FadeOut(x_origin[1]))
+        self.play(Transform(x_origin[2], x_float[1:3]))
         # x_tip = MathTex('X:')
         # x_origin1 = MathTex(r'2^{-011}')
         # times1 = MathTex(r'\times')

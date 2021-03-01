@@ -10,7 +10,7 @@ class jobs(Scene):
         text2 = Text('桂文珑: 文稿撰写,失效函数思路讲解', t2c={
             '[0:3]': YELLOW
         }).next_to(text1, DOWN).scale(0.5)
-        text3 = Text('冯毅凯: kmp 算法实现与思路讲解', t2c={
+        text3 = Text('冯奕凯: kmp 算法实现与思路讲解', t2c={
             '[0:3]': YELLOW
         }).next_to(text2, DOWN).scale(0.5)
         text4 = Text('孟旭: 代码实现与思路讲解', t2c={
