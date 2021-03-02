@@ -1,13 +1,10 @@
-from manim import *
+import math
 
 
-class test22(Scene):
-    def construct(self):
-        cir1 = Circle()
-        cir2 = Circle(fill_opacity=1)
-        text = Text("Text").scale(2)
-        mobjects = VGroup(cir1, cir2, text).scale(1.5).arrange(RIGHT, buff=2)
+def out(n):
+    if n > 10:
+        return 500
+    return n * math.sqrt(1 + out(n + 1))
 
-        anims = AnimationGroup(ShowCreation(cir1), Write(cir2), FadeIn(text))
-        self.play(anims)
-        self.wait()
+
+print(out(1))
