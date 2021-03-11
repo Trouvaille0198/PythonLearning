@@ -27,7 +27,7 @@ class Bayes():
         pb = 0
         self.save_records('\n')
         for key, value in self.A.items():
-            text = '在' + key + '成立的条件下, ' + description + '的概率是: '
+            text = '在"' + key + '"成立的条件下, "' + description + '"的概率是: '
             p = input(text)
             # 保存在日志中
             self.save_records(text + p)
