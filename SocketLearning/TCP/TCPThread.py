@@ -10,10 +10,11 @@ class SendThread(Thread):
 
     def run(self):
         while True:
-            # msg = input("msg to send: ")
+            msg = input()
             self.socket.send(msg.encode('utf-8'))
             if msg.lower() == 'over':
-                sys.exit(0)
+                # sys.exit(0)
+                self.socket.close()
 
 
 class RecvThread(Thread):
