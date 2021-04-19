@@ -21,7 +21,7 @@ class Server():
             rt = RecvThread('\nrecv: ', con)
             # 启动线程
             st.start()
-            rt.setDaemon(True)  # 设置守护线程   后台线程
+            rt.setDaemon(True)  # 设置守护线程/后台线程
             rt.start()
             print('start server')
         con.close()  # 关闭连接
@@ -29,8 +29,8 @@ class Server():
     def login_check(self, con):
         username = con.recv(2048).decode('utf-8')
         password = con.recv(2048).decode('utf-8')
-        admin = ['sun', '123']
-        if username not in admin or password not in admin:
+        admin = {'sun': '123', 'jimmy': '456'}
+        if username not in admin.keys() or password not in admin.values():
             print("Login failed!")
             con.send("Login failed!".encode('utf-8'))
             self.login_check(con)
