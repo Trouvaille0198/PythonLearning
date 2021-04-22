@@ -1,5 +1,6 @@
 import socket
 from TCPThread import SendThread, RecvThread
+import time
 
 
 class Client():
@@ -9,7 +10,11 @@ class Client():
         self.port = port
 
     def connect(self):
-        self.client.connect((self.ip, self.port))
+        try:
+            self.client.connect((self.ip, self.port))
+            return True
+        except:
+            return False
 
     def start(self):
         st = SendThread('\nsend: ', self.client)
@@ -19,22 +24,18 @@ class Client():
         rt.setDaemon(True)  # 设置守护线程/后台线程
         rt.start()
 
-    def login(self):
-        username = input("Please input your username: ")
-        password = input("please input your password: ")
+    def login(self, username, password):
+        # username = input("Please input your username: ")
+        # password = input("please input your password: ")
         self.client.send(username.encode('utf-8'))
         self.client.send(password.encode('utf-8'))
         res = self.client.recv(2048).decode('utf-8')
-        print(res)
-        if res == 'Login successfully!':
-            pass
-        else:
-            self.login()
+        return res
 
 
 if __name__ == '__main__':
     # 本机的ip和端口
-    target_ip = '192.168.1.105'
+    target_ip = 'target ip here'
     target_host = socket.gethostname()
     target_port = 9000
 

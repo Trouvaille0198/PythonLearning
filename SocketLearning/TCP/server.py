@@ -1,21 +1,24 @@
 import socket
 from TCPThread import SendThread, RecvThread
+import time
 
 
 class Server():
     def __init__(self, ip, port):
         self.server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.ip = ip
-        self.port = port
+        self.port = int(port)
 
     def start(self):
         self.server.bind((self.ip, self.port))
         self.server.listen(5)  # 等待客户端连接
+        # self.server.settimeout(300)
 
         while True:
 
             # con就是客户端链接过来而在服务端为期生成的一个链接实例
             con, addr = self.server.accept()  # 建立客户端连接
+            # con.settimeout(5.0)
             self.login_check(con)
             st = SendThread('\nsend: ', con)
             rt = RecvThread('\nrecv: ', con)
@@ -40,7 +43,7 @@ class Server():
 
 if __name__ == '__main__':
     # 本机的ip和端口
-    ip = '192.168.1.105'
+    ip = 'your ip here'
     host = socket.gethostname()
     port = 9000
     server = Server(host, port)
