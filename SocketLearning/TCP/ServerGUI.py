@@ -9,7 +9,7 @@ import time
 import sys
 
 
-class ClientGUI():
+class ServerGUI():
     def __init__(self, master):
         self.root = master
         self.root.title('Server')
@@ -36,22 +36,27 @@ class MainPage():
         self.exit_button = tk.Button(self.main_page,
                                      text='exit',
                                      state='disabled').grid(row=2, column=0)
-        t = threading.Thread(target=self.get_msg)
+        t = threading.Thread(target=self.keep)
         t.start()
 
-    def get_msg(self):
+    def keep(self):
         while True:
-            recv_time = 'Server: ' + time.strftime('%Y-%m-%d %H:%M:%S',
-                                                   time.localtime()) + '\n'
-            recv_msg = client.recv() + '\n'
-            self.message_frame.config(state='normal')
-            self.message_frame.insert(tk.END, recv_time + recv_msg)
-            self.message_frame.see(tk.END)
-            self.message_frame.config(state='disabled')
+            con = server.accept()
+            server.login_check(con)
+            self.get_msg()
+
+    def get_msg(self):
+        recv_time = 'Server: ' + time.strftime('%Y-%m-%d %H:%M:%S',
+                                               time.localtime()) + '\n'
+        recv_msg = server.recv() + '\n'
+        self.message_frame.config(state='normal')
+        self.message_frame.insert(tk.END, recv_time + recv_msg)
+        self.message_frame.see(tk.END)
+        self.message_frame.config(state='disabled')
 
     def send_msg(self):
         msg = self.msg_entry.get()
-        client.send(msg)
+        server.send(msg)
         send_time = 'Client: ' + time.strftime('%Y-%m-%d %H:%M:%S',
                                                time.localtime()) + '\n'
         blank = ' ' * 40
@@ -82,46 +87,17 @@ class ConnectPage():
         ip = self.ip_entry.get() if self.ip_entry.get(
         ) else socket.gethostname()
         port = int(self.port_entry.get()) if self.port_entry.get() else 9000
-        global client
-        client = Client(ip, port)
-        is_connected = client.connect()
+        global server
+        server = Server(ip, port)
+        is_connected = server.connect()
         if is_connected == True:
             self.connect_page.destroy()
-            LoginPage(self.master)
+            MainPage(self.master)
         else:
             messagebox.showerror("Error", "connection failed!")
 
 
-class LoginPage():
-    def __init__(self, master):
-        self.master = master
-        self.login_page = tk.Frame(self.master)
-        self.login_page.grid()
-
-        tk.Label(self.login_page, text='username').grid(row=0)
-        self.user_entry = tk.Entry(self.login_page)
-        self.user_entry.grid(row=0, column=1)
-        tk.Label(self.login_page, text='password').grid(row=1)
-        self.passwrd_entry = tk.Entry(self.login_page)
-        self.passwrd_entry.grid(row=1, column=1)
-
-        self.login_btn = tk.Button(self.login_page,
-                                   text='login',
-                                   command=self.login).grid(row=3)
-
-    def login(self):
-        username = self.user_entry.get()
-        password = self.passwrd_entry.get()
-        res = client.login(username, password)
-        if res == 'Login successfully!':
-            messagebox.showinfo("Congratulations", "login successfully!")
-            self.login_page.destroy()
-            MainPage(self.master)
-        else:
-            messagebox.showerror("Error", "login failed!")
-
-
 if __name__ == '__main__':
     root = tk.Tk()
-    ClientGUI(root)
+    ServerGUI(root)
     root.mainloop()

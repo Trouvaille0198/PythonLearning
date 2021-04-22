@@ -9,6 +9,22 @@ class Server():
         self.ip = ip
         self.port = int(port)
 
+    def connect(self):
+        try:
+            self.server.bind((self.ip, self.port))
+            self.server.listen(5)
+            return True
+        except:
+            return False
+
+    def accept(self):
+        con, addr = self.server.accept()
+        return con
+
+    def recv(self, con):
+        while True:
+            recv_msg = con.recv(1024)
+
     def start(self):
         self.server.bind((self.ip, self.port))
         self.server.listen(5)  # 等待客户端连接
