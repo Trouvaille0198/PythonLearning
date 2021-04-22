@@ -1,16 +1,20 @@
 import tkinter as tk
 from tkinter import messagebox
 from tkinter import filedialog
-from client import Client
+from tkinter import scrolledtext
+from server import Server
 import socket
+import threading
+import time
+import sys
 
 
 class ClientGUI():
     def __init__(self, master):
         self.root = master
-        self.root.title('Client')
+        self.root.title('Server')
         self.root.geometry('600x600')
-        self.client = 1
+
         # MainPage(self.root)
         ConnectPage(self.root)
 
@@ -20,13 +24,42 @@ class MainPage():
         self.master = master
         self.main_page = tk.Frame(self.master)
         self.main_page.grid()
-        self.msg_button = tk.Button(self.main_page,
-                                    text='send',
-                                    command=self.send_msg).grid(row=0,
-                                                                column=0)
+
+        self.message_frame = scrolledtext.ScrolledText(self.main_page)
+        self.message_frame.grid(row=0, column=0, rowspan=1, columnspan=4)
+        tk.Label(self.main_page, text='msg ').grid(row=1)
+        self.msg_entry = tk.Entry(self.main_page)
+        self.msg_entry.grid(row=1, column=1)
+        self.send_btn = tk.Button(self.main_page,
+                                  text='send',
+                                  command=self.send_msg).grid(row=1, column=2)
         self.exit_button = tk.Button(self.main_page,
                                      text='exit',
-                                     state='disabled').grid(row=1, column=0)
+                                     state='disabled').grid(row=2, column=0)
+        t = threading.Thread(target=self.get_msg)
+        t.start()
+
+    def get_msg(self):
+        while True:
+            recv_time = 'Server: ' + time.strftime('%Y-%m-%d %H:%M:%S',
+                                                   time.localtime()) + '\n'
+            recv_msg = client.recv() + '\n'
+            self.message_frame.config(state='normal')
+            self.message_frame.insert(tk.END, recv_time + recv_msg)
+            self.message_frame.see(tk.END)
+            self.message_frame.config(state='disabled')
+
+    def send_msg(self):
+        msg = self.msg_entry.get()
+        client.send(msg)
+        send_time = 'Client: ' + time.strftime('%Y-%m-%d %H:%M:%S',
+                                               time.localtime()) + '\n'
+        blank = ' ' * 40
+        self.message_frame.config(state='normal')
+        self.message_frame.insert(tk.END,
+                                  blank + send_time + blank + msg + '\n')
+        self.message_frame.see(tk.END)
+        self.message_frame.config(state='disabled')
 
 
 class ConnectPage():
@@ -48,7 +81,7 @@ class ConnectPage():
     def connect(self):
         ip = self.ip_entry.get() if self.ip_entry.get(
         ) else socket.gethostname()
-        port = int(self.port_entry.get()) if self.port_entry.get() else 5000
+        port = int(self.port_entry.get()) if self.port_entry.get() else 9000
         global client
         client = Client(ip, port)
         is_connected = client.connect()
@@ -56,7 +89,7 @@ class ConnectPage():
             self.connect_page.destroy()
             LoginPage(self.master)
         else:
-            messagebox.showerror("Python Demo", "connection failed!")
+            messagebox.showerror("Error", "connection failed!")
 
 
 class LoginPage():
@@ -81,8 +114,14 @@ class LoginPage():
         password = self.passwrd_entry.get()
         res = client.login(username, password)
         if res == 'Login successfully!':
-            messagebox.showinfo("Python Demo", "login successfully!")
+            messagebox.showinfo("Congratulations", "login successfully!")
             self.login_page.destroy()
             MainPage(self.master)
         else:
-            messagebox.showerror("Python Demo", "login failed!")
+            messagebox.showerror("Error", "login failed!")
+
+
+if __name__ == '__main__':
+    root = tk.Tk()
+    ClientGUI(root)
+    root.mainloop()
