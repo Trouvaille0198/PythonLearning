@@ -36,7 +36,7 @@ class MainPage():
                                   command=self.send_msg).grid(row=1, column=2)
         self.exit_button = tk.Button(self.main_page,
                                      text='exit',
-                                     state='disabled').grid(row=2, column=0)
+                                     command=self.exit).grid(row=2, column=0)
         t = threading.Thread(target=self.get_msg)
         t.start()
 
@@ -62,6 +62,10 @@ class MainPage():
         self.message_frame.see(tk.END)
         self.message_frame.config(state='disabled')
         self.msg_entry.delete(0, 'end')
+
+    def exit(self):
+        client.close()
+        sys.exit()
 
 
 class ConnectPage():

@@ -48,6 +48,9 @@ class Client():
     def send(self, msg):
         self.client.send(msg.encode('utf-8'))
 
+    def close(self):
+        self.client.close()
+
     # def recv_to_file(self):
 
 

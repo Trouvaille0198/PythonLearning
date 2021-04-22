@@ -58,6 +58,9 @@ class Server():
                 con.send("Login successfully!".encode('utf-8'))
                 return True
 
+    def close(self):
+        self.server.close()
+
 
 if __name__ == '__main__':
     # 本机的ip和端口
