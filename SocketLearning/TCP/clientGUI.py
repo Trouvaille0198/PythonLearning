@@ -29,6 +29,7 @@ class MainPage():
         self.message_frame.grid(row=0, column=0, rowspan=1, columnspan=4)
         tk.Label(self.main_page, text='msg ').grid(row=1)
         self.msg_entry = tk.Entry(self.main_page)
+        self.msg_entry.bind('<Return>', self.send_msg)
         self.msg_entry.grid(row=1, column=1)
         self.send_btn = tk.Button(self.main_page,
                                   text='send',
@@ -49,7 +50,7 @@ class MainPage():
             self.message_frame.see(tk.END)
             self.message_frame.config(state='disabled')
 
-    def send_msg(self):
+    def send_msg(self, event):
         msg = self.msg_entry.get()
         client.send(msg)
         send_time = 'Client: ' + time.strftime('%Y-%m-%d %H:%M:%S',
@@ -60,6 +61,7 @@ class MainPage():
                                   blank + send_time + blank + msg + '\n')
         self.message_frame.see(tk.END)
         self.message_frame.config(state='disabled')
+        self.msg_entry.delete(0, 'end')
 
 
 class ConnectPage():
@@ -102,7 +104,7 @@ class LoginPage():
         self.user_entry = tk.Entry(self.login_page)
         self.user_entry.grid(row=0, column=1)
         tk.Label(self.login_page, text='password').grid(row=1)
-        self.passwrd_entry = tk.Entry(self.login_page)
+        self.passwrd_entry = tk.Entry(self.login_page, show='*')
         self.passwrd_entry.grid(row=1, column=1)
 
         self.login_btn = tk.Button(self.login_page,

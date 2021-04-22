@@ -22,8 +22,10 @@ class Server():
         return con
 
     def recv(self, con):
-        while True:
-            recv_msg = con.recv(1024)
+        return con.recv(1024).decode('utf-8')
+
+    def send(self, con, msg):
+        con.send(msg.encode('utf-8'))
 
     def start(self):
         self.server.bind((self.ip, self.port))
@@ -31,7 +33,6 @@ class Server():
         # self.server.settimeout(300)
 
         while True:
-
             # con就是客户端链接过来而在服务端为期生成的一个链接实例
             con, addr = self.server.accept()  # 建立客户端连接
             # con.settimeout(5.0)
@@ -46,15 +47,16 @@ class Server():
         con.close()  # 关闭连接
 
     def login_check(self, con):
-        username = con.recv(2048).decode('utf-8')
-        password = con.recv(2048).decode('utf-8')
-        admin = {'sun': '123', 'jimmy': '456'}
-        if username not in admin.keys() or password not in admin.values():
-            print("Login failed!")
-            con.send("Login failed!".encode('utf-8'))
-            self.login_check(con)
-        else:
-            con.send("Login successfully!".encode('utf-8'))
+        while True:
+            username = con.recv(2048).decode('utf-8')
+            password = con.recv(2048).decode('utf-8')
+            admin = {'sun': '123', 'jimmy': '456'}
+            if username not in admin.keys() or password not in admin.values():
+                print("Login failed!")
+                con.send("Login failed!".encode('utf-8'))
+            else:
+                con.send("Login successfully!".encode('utf-8'))
+                return True
 
 
 if __name__ == '__main__':
