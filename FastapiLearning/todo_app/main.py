@@ -1,23 +1,24 @@
 from fastapi import FastAPI
-from routers import todos
-from sql_app import sql
 from fastapi.middleware.cors import CORSMiddleware
 
-app = FastAPI()
-app.include_router(todos.router)
-app.include_router(sql.router)
-origins = [
-    "http://localhost:8080",
-]
+from routers.apis import api_router
+from core.config import settings
+
+app = FastAPI(title=settings.APP_NAME)
+# 注册路由
+app.include_router(api_router, prefix=settings.API_PREFIX)
+
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origins=[str(origin) for origin in settings.BACKEND_CORS_ORIGINS],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
+    expose_headers=["Content-Disposition"]
 )
 
 if __name__ == '__main__':
     import uvicorn
-    uvicorn.run(app, host='127.0.0.1', port=8888)
+    uvicorn.run(app='main:app', host='127.0.0.1',
+                port=settings.PORT, reload=settings.RELOAD)
