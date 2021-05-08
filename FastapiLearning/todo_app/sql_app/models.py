@@ -7,5 +7,5 @@ class Todo(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     content = Column(String)
-    created_time = Column(Integer(11))
+    created_time = Column(Integer)
     is_done = Column(Boolean, default=False)

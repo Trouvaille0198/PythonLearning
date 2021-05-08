@@ -8,5 +8,5 @@ class Todo(BaseModel):
     created_time: int
     is_done: bool
 
-    class config:
+    class Config:
         orm_mode = True

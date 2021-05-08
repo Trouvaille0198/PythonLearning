@@ -1,11 +1,11 @@
 from fastapi import APIRouter
 
 router = APIRouter(
-    prefix='/todos',
-    tags=['todo']
+    prefix='/home',
+    tags=['home!']
 )
 
 
 @router.get("/")
 async def get_todos():
-    return [{}]
+    return [{'a': 1}]

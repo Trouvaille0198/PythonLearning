@@ -1,9 +1,11 @@
 from fastapi import FastAPI
 from routers import todos
+from sql_app import sql
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
 app.include_router(todos.router)
+app.include_router(sql.router)
 origins = [
     "http://localhost:8080",
 ]

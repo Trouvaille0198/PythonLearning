@@ -1,10 +1,11 @@
 from sqlalchemy.orm import Session
-import models, schemas
+import models
+import schemas
 
 
 # Create
 def create_todo(db: Session, todo: schemas.Todo):
-    db_todo = todo
+    db_todo = models.Todo(**todo.dict())
     db.add(db_todo)
     db.commit()
     db.refresh(db_todo)
