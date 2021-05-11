@@ -6,7 +6,7 @@ class TodoBase(BaseModel):
     id: int
     content: str
     created_time: int
-    is_done: bool
+    is_done: bool = False
 
     class Config:
         orm_mode = True
