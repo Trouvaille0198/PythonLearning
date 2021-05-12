@@ -15,7 +15,8 @@ class Settings:
     # token过期时间
     # ACCESS_TOKEN_EXPIRE_MINUTES = 24 * 60
     # 跨域白名单
-    BACKEND_CORS_ORIGINS: List[AnyHttpUrl] = ["http://localhost:8080"]
+    BACKEND_CORS_ORIGINS: List[AnyHttpUrl] = [
+        "http://localhost:8080", "http://192.168.1.105:8080"]
     # db配置
     DB_URL = "sqlite:///./sql_app.db"
     # 启动端口配置

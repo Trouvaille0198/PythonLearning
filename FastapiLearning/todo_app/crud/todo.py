@@ -4,7 +4,7 @@ from schemas.todo import TodoBase
 
 
 # Create
-def create_todo(db: Session, todo: TodoBase):
+def crud_create_todo(db: Session, todo: TodoBase):
     db_todo = Todo(**todo.dict())
     db.add(db_todo)
     db.commit()
@@ -13,29 +13,31 @@ def create_todo(db: Session, todo: TodoBase):
 
 
 # Read
-def get_todo(db: Session, id: int):
+def crud_get_todo(db: Session, id: int):
     return db.query(Todo).filter(Todo.id == id).first()
 
 
-def get_todos(db: Session, skip: int = 0, limit: int = 0):
+def crud_get_todos(db: Session, skip: int = 0, limit: int = 0):
     return db.query(Todo).offset(skip).limit(limit).all()
 
 
 # update
-def change_done(db: Session, id: int):
-    db_todo = db.query(Todo).filter(Todo.id == id).first()
-    db_todo.is_done = not db_todo.is_done
+def crud_update_todo(db: Session, todo: TodoBase):
+    print(todo.dict())
+    db_todo = db.query(Todo).filter(Todo.id == todo.id).first()
+    for key, value in todo.dict().items():
+        setattr(db_todo, key, value)
+    db.add(db_todo)
     db.commit()
-    db.flush()
-    db.refresh(db_todo)
+    # db.refresh(db_todo)
     return db_todo
 
 
 # delete
-def delete_todo(db: Session, id: int):
+def crud_delete_todo(db: Session, id: int):
     db_todo = db.query(Todo).filter(Todo.id == id).first()
     if db_todo:
         db.delete(db_todo)
         db.commit()
-        db.flush()
-        return db_todo()
+        # db.flush()
+        return db_todo
