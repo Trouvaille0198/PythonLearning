@@ -14,9 +14,11 @@ for key, value in data.items():
         value.append('优秀')
     else:
         value.append('及格')
+
 program = [value[0] for value in data.values()]
 biology = [value[1] for value in data.values()]
 science = [value[2] for value in data.values()]
+
 plt.figure()
 plt.hist(program, bins=4)
 plt.hist(biology, bins=4)
