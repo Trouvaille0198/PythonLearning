@@ -1,24 +1,31 @@
 from player import Player
+from ball import Ball
 import random
 from const import *
 
 
 class PlayerGroup():
-    def __init__(self):
+    def __init__(self, game):
+        self.ball = Ball()
         self.init_player_info()
+        self.init_player_location(game)
 
     # 构造函数
     def init_player_info(self):
         self.left_players = [Player(side=-1)]
         self.right_players = [Player(side=1)]
 
-    def init_player_location(self):
+    def init_player_location(self, game):
+        game.field.init_field()
         for player in self.left_players:
             if player.position == 'DEFAULT':
-                player.move_to((24, 30))
+                player.init_player(game, (24, 30))
         for player in self.right_players:
             if player.position == 'DEFAULT':
-                player.move_to((24, 38))
+                player.init_player(game, (24, 38))
+
+        self.ball.coor = self.left_players[0].coor
+        self.left_players[0].ball_state = True
 
     # 辅助函数
     def get_player_by_coor(self, coor: tuple):

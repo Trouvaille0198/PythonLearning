@@ -13,12 +13,23 @@ class Player():
         self.position = position
 
     # 辅助函数
+    def init_player(self, game, coor):
+        """
+        初始化球员状态
+        :param game: 上级game实例
+        :param coor: 初始坐标
+        """
+        self.coor = coor
+        self.ball_state = False
+        self.done = False
+        game.field.update_coor_content(coor, self)
+
     def is_same_side(self, another_player):
         return self.side == another_player.side
 
     # 球员操作
     def move_to(self, game, coor: tuple):
-        if 0 <= coor[0] <= FIELD_LENGTH and 0 <= coor[1] <= FIELD_WIDTH and coor != self.coor:
+        if coor != self.coor:
             game.field.update_player_location(self, coor)
 
     def pass_ball(self, game, next_player):

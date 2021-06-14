@@ -7,8 +7,7 @@ class Game():
     def __init__(self):
         self.score = [0, 0]
         self.field = Field()
-        self.players = PlayerGroup()
-        self.ball_side = -1
+        self.players = PlayerGroup(self)
         self.state = 0
 
     # 辅助函数
