@@ -16,13 +16,6 @@ class Player():
     def is_same_side(self, another_player):
         return self.side == another_player.side
 
-    def check_battle(self, game, coor: tuple):
-        """
-        好像没啥用了
-        """
-        if game.field.get_range_player_coor(coor, self.side, 5):
-            pass
-
     # 球员操作
     def move_to(self, game, coor: tuple):
         if 0 <= coor[0] <= FIELD_LENGTH and 0 <= coor[1] <= FIELD_WIDTH and coor != self.coor:
@@ -49,9 +42,18 @@ class Player():
                 game.field.update_ball_location((x, y))
 
     def scramble(self, another_player):
+        """
+        争抢球权
+        """
         win_player = random.choice((self, another_player))  # TODO补充争抢逻辑，决出胜者
         # win_player.move_to(game, ball_coor)
         return win_player
+
+    def overlap_judge(self):
+        """
+        持球球员遇到重合时的动作
+        """
+        pass
 
     def act(self, game):
         for coor in game.field.get_nearest_player_coor():

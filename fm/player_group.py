@@ -22,6 +22,9 @@ class PlayerGroup():
 
     # 辅助函数
     def get_player_by_coor(self, coor: tuple):
+        """
+        根据坐标返回球员实例
+        """
         for player in self.left_players:
             if player.coor == coor:
                 return player
@@ -31,14 +34,20 @@ class PlayerGroup():
         return None
 
     def scramble(self, p1, p2):
+        """
+        争抢，返回胜负者
+        """
         win_player = p1.scramble(p2)
         if win_player == p1:
             return p1, p2
         else:
             return p2, p1
-    # 判定函数
 
+    # 判定函数
     def scramble_judge(self, game):
+        """
+        争抢判定
+        """
         ball_location = game.field.get_ball_location()
         if ball_location:
             # 判定是否无人持球
@@ -68,6 +77,9 @@ class PlayerGroup():
                         win_player.move_to(game, ball_location)
 
     def overlap_judge(self):
+        """
+        异队球员重合判定
+        """
         pass
 
     def frame_act(self):
