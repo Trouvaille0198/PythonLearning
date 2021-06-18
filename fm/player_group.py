@@ -2,6 +2,7 @@ from player import Player
 from ball import Ball
 import random
 from const import *
+from logger import logger
 
 
 class PlayerGroup():
@@ -31,6 +32,8 @@ class PlayerGroup():
     def get_player_by_coor(self, coor: tuple):
         """
         根据坐标返回球员实例
+        :param coor: 坐标
+        :return: 球员实例
         """
         for player in self.left_players:
             if player.coor == coor:
@@ -43,6 +46,9 @@ class PlayerGroup():
     def scramble(self, p1, p2):
         """
         争抢，返回胜负者
+        :param p1: 球员1
+        :param p2: 球员2
+        :return: 胜者，败者
         """
         win_player = p1.scramble(p2)
         if win_player == p1:
@@ -55,14 +61,16 @@ class PlayerGroup():
         """
         争抢判定
         """
-        ball_location = game.field.get_ball_location()
-        if ball_location:
+        if not game.field.ball_is_held():
             # 判定是否无人持球
-            players = list(map(self.get_player_by_coor, game.field.get_nearest_player_coor()))
+            logger.debug('争抢判定')
+            ball_location = game.field.get_ball_location()
+            players = game.field.get_nearest_player()
             lplayers = []
             rplayers = []
             for player in players:
                 if player in self.left_players:
+                    logger.debug('添加一名球员到左方')
                     lplayers.append(player)
                 else:
                     rplayers.append(player)
