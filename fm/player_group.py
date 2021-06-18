@@ -83,9 +83,10 @@ class PlayerGroup():
                     if not lplayers or not rplayers:
                         win_player.move_to(game, ball_location)
 
-    def overlap_judge(self):
+    def overlap_judge(self, game):
         """
         异队球员重合判定
+        :param game: 比赛实例
         """
         pass
 

@@ -27,38 +27,57 @@ class Player():
     def is_same_side(self, another_player):
         return self.side == another_player.side
 
+    def random_select_coor(self, coor: tuple, width: int = 2) -> tuple:
+        """
+        随机选择附近的坐标
+        :param coor: 中心坐标
+        :param width: 范围
+        :return: 随机坐标
+        """
+        row = random.randint(coor[0]-width, coor[0]+width)
+        col = random.randint(coor[1]-width, coor[1]+width)
+        return (row, col)
+
     # 球员操作
     def move_to(self, game, coor: tuple):
+        """
+        移动到指定坐标处
+        :param game: 比赛类实例
+        :param coor: 目标坐标
+        """
         if coor != self.coor:
             game.field.update_player_location(self, coor)
 
     def pass_ball(self, game, next_player):
         """
         传球
+        :param game: 比赛类实例
+        :param next_player: 传给的球员
         """
         if ball_state:
             self.ball_state = False
             target_coor = next_player.coor
-            # TODO拦截判定
+            # TODO 拦截判定
             distance = int(game.field.get_distance(self.coor, next_player.coor)/10)  # 12级
-            # TODO补充落地范围判定逻辑
-            x = random.choice(target_coor[0]-distance, target_coor[0]+distance)
-            y = random.choice(target_coor[1]-distance, target_coor[1]+distance)
-            final_coor = (x, y)
-            # TODO出界判定
-            if final_coor == target_coor:
-                # 精准传球
-                next_player.ball_state = True
-            else:
-                game.field.update_ball_location((x, y))
+            # TODO 补充落地范围判定逻辑
+            final_coor = self.random_select_coor(target_coor, distance)  # 暂时先随机选择
+            game.field.update_ball_location((x, y))
 
     def scramble(self, another_player):
         """
-        争抢球权
+        当球无人持有时，争抢球权
+        :param another_player: 另一个球员
+        :return: 争抢成功的球员实例
         """
-        win_player = random.choice((self, another_player))  # TODO补充争抢逻辑，决出胜者
-        # win_player.move_to(game, ball_coor)
+        # TODO 补充争抢逻辑，决出胜者
+        win_player = random.choice((self, another_player))  # 暂时随机选
         return win_player
+
+    def challenge(self, another_player):
+        """
+        过人或抢断
+        :param another_player: 另一个球员
+        """
 
     def overlap_judge(self):
         """
@@ -67,6 +86,28 @@ class Player():
         pass
 
     def act(self, game):
-        for coor in game.field.get_nearest_player_coor():
-            if coor == self.coor:
-                self.scramble()
+        """
+        球员进行相应位置的动作
+        :param game: 比赛实例
+        """
+        for position in POSITION_LIST:
+            if position == 'DEFALUT':
+                pass
+            elif position == 'DEFALUT':
+                pass
+            elif position == 'DEFALUT':
+                pass
+            elif position == 'DEFALUT':
+                pass
+            elif position == 'DEFALUT':
+                pass
+            elif position == 'DEFALUT':
+                pass
+            elif position == 'DEFALUT':
+                pass
+            elif position == 'DEFALUT':
+                pass
+            elif position == 'DEFALUT':
+                pass
+            else:
+                pass

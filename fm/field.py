@@ -171,7 +171,8 @@ class Field():
         if isinstance(target_coor_content, Ball):
             # 恰好移动到足球处
             player.ball_state = True
-            target_coor.is_held = True
+            target_coor_content.is_held = True
+            self.update_coor_content(target_coor_content, None)
         elif isinstance(target_coor_content, Player):
             # 如果目标坐标是球员实例
             if target_coor_content.side == player.side:
