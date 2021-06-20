@@ -11,6 +11,7 @@ class Player():
         self.ball_state = False
         self.done = False
         self.position = position
+        self.overlap = False
 
     # 辅助函数
     def init_player(self, game, coor):
@@ -61,7 +62,7 @@ class Player():
             distance = int(game.field.get_distance(self.coor, next_player.coor)/10)  # 12级
             # TODO 补充落地范围判定逻辑
             final_coor = self.random_select_coor(target_coor, distance)  # 暂时先随机选择
-            game.field.update_ball_location((x, y))
+            game.field.update_ball_location(game.players.ball, (x, y))
 
     def scramble(self, another_player):
         """
@@ -78,36 +79,41 @@ class Player():
         过人或抢断
         :param another_player: 另一个球员
         """
+        # TODO 补充过人和抢断逻辑，决出胜者
+        win_player = random.choice((self, another_player))  # 暂时随机选
+        return win_player
 
     def overlap_judge(self):
         """
+        可能不需要
         持球球员遇到重合时的动作
         """
-        pass
 
     def act(self, game):
         """
         球员进行相应位置的动作
         :param game: 比赛实例
         """
-        for position in POSITION_LIST:
-            if position == 'DEFALUT':
-                pass
-            elif position == 'DEFALUT':
-                pass
-            elif position == 'DEFALUT':
-                pass
-            elif position == 'DEFALUT':
-                pass
-            elif position == 'DEFALUT':
-                pass
-            elif position == 'DEFALUT':
-                pass
-            elif position == 'DEFALUT':
-                pass
-            elif position == 'DEFALUT':
-                pass
-            elif position == 'DEFALUT':
-                pass
-            else:
-                pass
+        if not self.done:
+            for position in POSITION_LIST:
+                if position == 'DEFALUT':
+                    pass
+                elif position == 'DEFALUT':
+                    pass
+                elif position == 'DEFALUT':
+                    pass
+                elif position == 'DEFALUT':
+                    pass
+                elif position == 'DEFALUT':
+                    pass
+                elif position == 'DEFALUT':
+                    pass
+                elif position == 'DEFALUT':
+                    pass
+                elif position == 'DEFALUT':
+                    pass
+                elif position == 'DEFALUT':
+                    pass
+                else:
+                    pass
+        self.done = True

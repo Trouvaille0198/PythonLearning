@@ -29,12 +29,7 @@ class Game():
 
     def start(self):
         for i in range(90):
-            for player in self.players.left_players:
-                player.act(self)
-                self.check_state()
-            for player in self.players.right_players:
-                player.act(self)
-                self.check_state()
+            self.players.frame_act(self)
 
 
 if __name__ == '__main__':

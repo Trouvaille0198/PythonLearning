@@ -103,6 +103,24 @@ class Field():
             for b in a:
                 yield b
 
+    def get_all_players(self) -> list:
+        """
+        获取场上所有球员实例
+        :return: 球员实例列表
+        """
+        players = []
+        for a in self.coor_content_generator():
+            if isinstance(a, Player):
+                players.append(a)
+        return players
+
+    def get_ball_held_player(self):
+        if self.ball_is_held():
+            for player in self.get_all_players():
+                if player.ball_state == True:
+                    return player
+        return None
+
     def get_square_range_coors(self, coor: tuple, width=2) -> list:
         """
         获取方形范围内的二维坐标
@@ -143,6 +161,7 @@ class Field():
     def update_ball_location(self, ball, ball_coor: tuple):
         """
         更新足球位置
+        :param ball: 球实例，来自player_group
         :param ball_coor: 球坐标
         """
         # 正常情况下，更新球位置时，球原本是被持有的，所以不用判断是否有未持有球的情况
@@ -197,7 +216,9 @@ class Field():
                         target_coor[0] += y
                         target_coor[1] += x
                         target_coor = self.adjust_out_of_border(tuple(target_coor))
-                # 若无球球员移动到有球球员上，则允许重叠，在下一个时间帧进行抢断与过人判定
+                else:
+                    # 若无球球员移动到有球球员上，则允许重叠，在下一个时间帧进行抢断与过人判定
+                    player.overlap = True  # 此时不变动坐标，仅仅修改重叠状态
         else:
             # 可能还有其他情况
             pass
